@@ -79,6 +79,7 @@ def salvar_cadastro(request):
 
 def filtrar_disciplinas(request):
     curso_id = request.GET.get('curso')
+    serie = request.GET.get('serie')
 
     if not curso_id:
         return JsonResponse([], safe=False)
@@ -86,7 +87,15 @@ def filtrar_disciplinas(request):
     disciplinas = Disciplina.objects.filter(
         cursos__id=curso_id,
         serie__isnull=False
-    ).select_related('serie').distinct()
+    )
+
+    if serie:
+        try:
+            disciplinas = disciplinas.filter(serie__ano=int(serie))
+        except ValueError:
+            return JsonResponse([], safe=False)
+
+    disciplinas = disciplinas.select_related('serie').distinct().order_by('nome')
 
     return JsonResponse([
         {'id': d.id, 'nome': d.nome, 'ano': d.serie.ano}
