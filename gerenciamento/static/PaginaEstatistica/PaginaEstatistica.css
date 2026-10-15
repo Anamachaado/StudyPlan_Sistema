@@ -1,0 +1,838 @@
+/* =========================================================
+   ESTATÍSTICAS  -  Estilização / Front-end
+   Arquivo: static/PaginaEstatistica/PaginaEstatistica.css
+   Mesma identidade das outras telas: fundo azul claro, azul
+   marinho, cantos arredondados e faixa lateral alternando
+   azul forte / azul claro.
+   ========================================================= */
+
+/* Variáveis com prefixo --es- e valor reserva em cada uso:
+   não dependem do :root nem de outros arquivos CSS. */
+:root {
+    --es-fundo-pagina: #f3f6fd;
+    --es-superficie: #ffffff;
+    --es-superficie-alt: #eef3fd;
+    --es-azul-tinta: #e3ebfc;
+    --es-linha: #dde5f7;
+
+    --es-marinho: #1b2f7e;
+    --es-azul-forte: #2547c4;
+    --es-azul-claro: #9db9f2;
+    --es-cabecalho: #3b4cb8;
+
+    --es-texto: #26325f;
+    --es-texto-suave: #5c6890;
+
+    --es-verde: #15803d;
+    --es-verde-claro: #dcfce7;
+    --es-vermelho: #dc2626;
+    --es-vermelho-claro: #fde8e8;
+    --es-vermelho-texto: #b91c1c;
+}
+
+
+/* =========================
+   PÁGINA
+========================= */
+
+.conteudo-da-pagina.pagina-estatisticas {
+    justify-content: flex-start;
+
+    align-items: stretch;
+
+    padding: 100px clamp(16px, 4vw, 48px) 56px;
+
+    text-align: left;
+
+    background-color: "#ec9731";
+}
+
+.pagina-estatisticas .estatisticas {
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+}
+
+.pagina-estatisticas button:focus-visible {
+    outline: 3px solid var(--es-cabecalho, #3b4cb8);
+    outline-offset: 2px;
+}
+
+.pagina-estatisticas .est-titulo {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin-top: 24px;
+    margin-bottom: 16px;
+
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    color: var(--es-marinho, #1b2f7e);
+}
+
+.est-titulo svg {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    stroke-width: 2.4;
+}
+
+.pagina-estatisticas .est-dica {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px 18px;
+
+    background-color: white;
+
+    border: 1px solid var(--es-linha, #dde5f7);
+
+    border-radius: 40px;
+
+    font-size: clamp(0.95rem, 0.9rem + 0.15vw, 1.05rem);
+
+    line-height: 1.5;
+
+    color: black;
+}
+
+.est-dica svg {
+    flex-shrink: 0;
+
+    width: 20px;
+    height: 20px;
+
+    color: var(--es-marinho, #1b2f7e);
+}
+
+
+/* =========================
+   RESUMO NO TOPO
+========================= */
+
+.est-resumo {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 14px;
+
+    margin-top: 24px;
+}
+
+.pagina-estatisticas .est-resumo-item {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+    padding: 18px 20px;
+
+    border: 1px solid var(--es-linha, #dde5f7);
+
+    border-radius: 16px;
+
+    background-color: var(--es-superficie, #ffffff);
+
+    box-shadow: 0 6px 20px rgba(37, 71, 196, 0.08);
+}
+
+.est-resumo-valor {
+    font-size: clamp(1.8rem, 1.4rem + 1.2vw, 2.5rem);
+
+    font-weight: 800;
+
+    line-height: 1.1;
+
+    color: var(--es-marinho, #1b2f7e);
+}
+
+.est-resumo-item.bom .est-resumo-valor {
+    color: var(--es-verde, #15803d);
+}
+
+.est-resumo-item.ruim .est-resumo-valor {
+    color: var(--es-vermelho-texto, #b91c1c);
+}
+
+.est-resumo-item.neutro .est-resumo-valor {
+    color: var(--es-texto-suave, #5c6890);
+}
+
+.est-resumo-rotulo {
+    font-size: clamp(0.9rem, 0.85rem + 0.15vw, 1.05rem);
+
+    font-weight: 600;
+
+    color: var(--es-texto-suave, #5c6890);
+}
+
+
+/* =========================
+   LISTA DE DISCIPLINAS (sanfona)
+========================= */
+
+.est-lista {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 14px;
+
+    margin-top: 24px;
+}
+
+/* Faixa lateral alternando azul forte / azul claro */
+
+.pagina-estatisticas .est-card {
+    --es-faixa: var(--es-azul-forte, #2547c4);
+
+    border: 1px solid var(--es-linha, #dde5f7);
+
+    border-radius: 16px;
+
+    background-color: var(--es-superficie, #ffffff);
+
+    background-image: linear-gradient(var(--es-faixa, #2547c4), var(--es-faixa, #2547c4));
+
+    background-size: 5px 100%;
+
+    background-repeat: no-repeat;
+
+    box-shadow: 0 6px 20px rgba(37, 71, 196, 0.08);
+
+    overflow: hidden;
+
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pagina-estatisticas .est-card:nth-child(even) {
+    --es-faixa: var(--es-azul-claro, #9db9f2);
+}
+
+.pagina-estatisticas .est-card.aberto {
+    border-color: #b9c9f0;
+
+    box-shadow: 0 10px 28px rgba(37, 71, 196, 0.13);
+}
+
+.pagina-estatisticas .est-card-titulo {
+    margin: 0;
+
+    font-size: inherit;
+
+    font-weight: inherit;
+
+    color: inherit;
+}
+
+.pagina-estatisticas .est-card-botao {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1.3fr) minmax(120px, 1fr) auto auto;
+
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 18px 22px 18px 30px;
+
+    border: none;
+
+    background: none;
+
+    font-family: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.pagina-estatisticas .est-card-botao:hover {
+    background-color: #f8faff;
+}
+
+.est-card-nome {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+    min-width: 0;
+}
+
+.est-card-nome strong {
+    font-size: clamp(1.05rem, 0.95rem + 0.3vw, 1.3rem);
+
+    font-weight: 800;
+
+    line-height: 1.3;
+
+    color: var(--es-marinho, #1b2f7e);
+}
+
+.est-card-nome small {
+    font-size: clamp(0.9rem, 0.85rem + 0.15vw, 1.05rem);
+
+    color: var(--es-texto-suave, #5c6890);
+}
+
+.pagina-estatisticas .est-progresso {
+    height: 10px;
+
+    border-radius: 999px;
+
+    background-color: var(--es-azul-tinta, #e3ebfc);
+
+    overflow: hidden;
+}
+
+.pagina-estatisticas .est-progresso-preenchido {
+    display: block;
+
+    height: 100%;
+
+    border-radius: 999px;
+
+    background-color: var(--es-azul-forte, #2547c4);
+}
+
+.pagina-estatisticas .est-progresso-preenchido.aprovado {
+    background-color: var(--es-verde, #15803d);
+}
+
+.pagina-estatisticas .est-progresso-preenchido.abaixo {
+    background-color: var(--es-vermelho, #dc2626);
+}
+
+.pagina-estatisticas .est-progresso-preenchido.sem_notas {
+    background-color: var(--es-azul-claro, #9db9f2);
+}
+
+.pagina-estatisticas .est-chip {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 5px 12px;
+
+    border-radius: 999px;
+
+    font-size: clamp(0.85rem, 0.8rem + 0.2vw, 1rem);
+
+    font-weight: 700;
+
+    line-height: 1.3;
+
+    text-align: center;
+
+    background-color: var(--es-azul-tinta, #e3ebfc);
+
+    color: var(--es-marinho, #1b2f7e);
+}
+
+.pagina-estatisticas .est-chip.aprovado,
+.pagina-estatisticas .est-chip.acima {
+    background-color: var(--es-verde-claro, #dcfce7);
+
+    color: var(--es-verde, #15803d);
+}
+
+.pagina-estatisticas .est-chip.abaixo {
+    background-color: var(--es-vermelho-claro, #fde8e8);
+
+    color: var(--es-vermelho-texto, #b91c1c);
+}
+
+.pagina-estatisticas .est-chip.sem_notas {
+    background-color: var(--es-superficie-alt, #eef3fd);
+
+    color: var(--es-texto-suave, #5c6890);
+}
+
+.pagina-estatisticas .est-seta {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: var(--es-azul-tinta, #e3ebfc);
+
+    color: var(--es-cabecalho, #3b4cb8);
+
+    transition: transform 0.25s ease, background-color 0.2s;
+}
+
+.est-seta svg {
+    width: 20px;
+    height: 20px;
+
+    stroke-width: 2.6;
+}
+
+.pagina-estatisticas .est-card.aberto .est-seta {
+    transform: rotate(180deg);
+
+    background-color: var(--es-cabecalho, #3b4cb8);
+
+    color: #ffffff;
+}
+
+
+/* Corpo que abre e fecha suavemente */
+
+.est-corpo {
+    display: grid;
+
+    grid-template-rows: 0fr;
+
+    /* Fechado: some também para o teclado (Tab) */
+    visibility: hidden;
+
+    transition: grid-template-rows 0.28s ease, visibility 0s linear 0.28s;
+}
+
+.est-card.aberto .est-corpo {
+    grid-template-rows: 1fr;
+
+    visibility: visible;
+
+    transition: grid-template-rows 0.28s ease, visibility 0s;
+}
+
+.est-corpo-interno {
+    min-height: 0;
+
+    overflow: hidden;
+}
+
+.est-corpo-conteudo {
+    margin: 0 30px;
+
+    padding: 18px 0 28px;
+
+    border-top: 1px solid var(--es-linha, #dde5f7);
+}
+
+.est-frase {
+    margin-bottom: 14px;
+
+    font-size: clamp(1rem, 0.9rem + 0.25vw, 1.15rem);
+
+    line-height: 1.55;
+
+    color: var(--es-texto, #26325f);
+}
+
+
+/* =========================
+   GRÁFICO (nota x média)
+========================= */
+
+.est-grafico {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    max-height: 380px;
+}
+
+.est-grade {
+    stroke: var(--es-azul-tinta, #e3ebfc);
+
+    stroke-width: 1;
+}
+
+.est-eixo {
+    stroke: #b9c6e8;
+
+    stroke-width: 1.5;
+}
+
+.est-texto-eixo {
+    font-size: 12px;
+
+    fill: var(--es-texto-suave, #5c6890);
+}
+
+.est-valor {
+    font-size: 14px;
+
+    font-weight: 800;
+}
+
+.est-valor-media {
+    fill: var(--es-texto-suave, #5c6890);
+}
+
+.est-valor-vazio {
+    fill: #7b86ac;
+}
+
+.est-texto-bimestre {
+    font-size: 14px;
+
+    font-weight: 700;
+
+    fill: var(--es-marinho, #1b2f7e);
+}
+
+.est-texto-maximo {
+    font-size: 12px;
+
+    fill: var(--es-texto-suave, #5c6890);
+}
+
+.est-grafico.compacto .est-texto-eixo {
+    font-size: 13px;
+}
+
+.est-grafico.compacto .est-valor {
+    font-size: 15px;
+}
+
+.est-grafico.compacto .est-texto-bimestre {
+    font-size: 15px;
+}
+
+.est-grafico.compacto .est-texto-maximo {
+    font-size: 13px;
+}
+
+/* As barras crescem quando o cartão abre */
+
+.est-card.aberto .est-barra {
+    transform-box: fill-box;
+
+    transform-origin: 50% 100%;
+
+    animation: est-crescer 0.55s ease-out both;
+}
+
+@keyframes est-crescer {
+    from {
+        transform: scaleY(0);
+    }
+
+    to {
+        transform: scaleY(1);
+    }
+}
+
+.est-legenda {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px 22px;
+
+    margin-top: 6px;
+
+    font-size: clamp(0.9rem, 0.85rem + 0.15vw, 1.05rem);
+
+    color: var(--es-texto-suave, #5c6890);
+}
+
+.est-legenda-item {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.est-legenda-cor {
+    width: 14px;
+    height: 14px;
+
+    flex-shrink: 0;
+
+    border-radius: 4px;
+}
+
+
+/* =========================
+   CARTÕES DOS BIMESTRES E INDICADORES
+========================= */
+
+.est-bimestres {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 14px;
+
+    margin-top: 22px;
+}
+
+.pagina-estatisticas .est-bimestre {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 4px;
+
+    padding: 16px 16px 18px;
+
+    border: 1px solid var(--es-linha, #dde5f7);
+
+    border-top: 4px solid var(--es-azul-forte, #2547c4);
+
+    border-radius: 14px;
+
+    background-color: var(--es-superficie-alt, #eef3fd);
+}
+
+.pagina-estatisticas .est-bimestre.abaixo {
+    border-top-color: var(--es-vermelho, #dc2626);
+}
+
+.pagina-estatisticas .est-bimestre.sem_notas {
+    border-top-color: #c3cfee;
+}
+
+.est-bimestre-nome {
+    font-size: clamp(0.9rem, 0.85rem + 0.15vw, 1.05rem);
+
+    font-weight: 700;
+
+    color: var(--es-texto-suave, #5c6890);
+}
+
+.est-bimestre-nota {
+    font-size: clamp(1.7rem, 1.3rem + 1.2vw, 2.4rem);
+
+    font-weight: 800;
+
+    line-height: 1.15;
+
+    color: var(--es-marinho, #1b2f7e);
+}
+
+.est-bimestre-nota small {
+    font-size: 0.4em;
+
+    font-weight: 600;
+
+    color: var(--es-texto-suave, #5c6890);
+}
+
+.est-bimestre-media {
+    margin-bottom: 6px;
+
+    font-size: clamp(0.9rem, 0.85rem + 0.15vw, 1.05rem);
+
+    color: var(--es-texto-suave, #5c6890);
+}
+
+.est-indicadores {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 14px;
+
+    margin-top: 14px;
+}
+
+.pagina-estatisticas .est-indicador {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    padding: 14px 18px;
+
+    border-radius: 14px;
+
+    background-color: var(--es-azul-tinta, #e3ebfc);
+}
+
+.est-indicador-rotulo {
+    font-size: clamp(0.9rem, 0.85rem + 0.15vw, 1.05rem);
+
+    color: var(--es-texto-suave, #5c6890);
+}
+
+.est-indicador strong {
+    font-size: clamp(1.05rem, 0.95rem + 0.3vw, 1.3rem);
+
+    font-weight: 800;
+
+    color: var(--es-marinho, #1b2f7e);
+}
+
+
+/* =========================
+   SEM DISCIPLINAS
+========================= */
+
+.pagina-estatisticas .est-vazio {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin-top: 24px;
+
+    padding: 36px 24px;
+
+    border: 1px solid var(--es-linha, #dde5f7);
+
+    border-radius: 16px;
+
+    background-color: var(--es-superficie, #ffffff);
+
+    box-shadow: 0 6px 20px rgba(37, 71, 196, 0.06);
+
+    text-align: center;
+}
+
+.est-vazio svg {
+    width: 36px;
+    height: 36px;
+
+    margin-bottom: 8px;
+
+    color: var(--es-cabecalho, #3b4cb8);
+}
+
+.est-vazio-titulo {
+    font-weight: 700;
+
+    color: var(--es-cabecalho, #3b4cb8);
+}
+
+.est-vazio-texto {
+    font-size: 0.95rem;
+
+    color: var(--es-texto-suave, #5c6890);
+}
+
+
+/* =========================
+   TABLET E CELULAR
+========================= */
+
+@media (max-width: 900px) {
+
+    .est-resumo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .est-bimestres {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 760px) {
+
+    .pagina-estatisticas .est-card-botao {
+        grid-template-columns: minmax(0, 1fr) auto;
+
+        gap: 12px 14px;
+
+        padding: 16px 14px 16px 22px;
+    }
+
+    .pagina-estatisticas .est-progresso {
+        grid-column: 1 / -1;
+
+        grid-row: 2;
+    }
+
+    .pagina-estatisticas .est-chip {
+        grid-column: 1;
+
+        grid-row: 3;
+
+        justify-self: start;
+    }
+
+    .pagina-estatisticas .est-seta {
+        grid-column: 2;
+
+        grid-row: 1;
+    }
+
+    .est-corpo-conteudo {
+        margin: 0 22px;
+    }
+
+    .est-indicadores {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .conteudo-da-pagina.pagina-estatisticas {
+        padding: 90px 12px 28px;
+    }
+
+    .pagina-estatisticas .est-titulo {
+        margin-top: 12px;
+    }
+
+    .est-titulo svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .est-resumo {
+        gap: 10px;
+    }
+
+    .pagina-estatisticas .est-resumo-item {
+        padding: 14px 16px;
+    }
+
+    .est-bimestres {
+        gap: 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .est-corpo,
+    .est-card.aberto .est-corpo,
+    .pagina-estatisticas .est-seta {
+        transition: none;
+    }
+
+    .est-card.aberto .est-barra {
+        animation: none;
+    }
+}

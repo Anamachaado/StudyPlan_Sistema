@@ -1,0 +1,75 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyPlan | Estatísticas</title>
+
+    <link rel="stylesheet" href="{% static 'PaginaHome/PaginaHome.css' %}?v={% now 'U' %}">
+
+    <link rel="stylesheet" href="{% static 'PaginaEstatistica/PaginaEstatistica.css' %}?v={% now 'U' %}">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body>
+
+    <div class="conteudo-da-pagina pagina-estatisticas">
+
+        <main class="estatisticas">
+
+            <h1 class="est-titulo">
+                Estatísticas de desempenho
+            </h1>
+
+            <p class="est-dica">
+                <i data-lucide="hand"></i>
+                Toque numa disciplina para ver suas notas de cada bimestre comparadas com a média.
+            </p>
+
+            <!-- Os cartões e os gráficos são montados pelo estatistica.js -->
+            <div id="est-raiz"></div>
+
+        </main>
+
+    </div>
+
+
+    <script>
+
+        const nomeUsuario = "{{ user.username }}";
+
+        const cursoUsuario = "{% if user.curso %}{{ user.curso.nome }}{% else %}Não informado{% endif %}";
+
+        const urlHome = "{% url 'home' %}";
+
+        const urlPerfil = "{% url 'perfil' %}";
+
+        const urlTarefas = "{% url 'tarefas' %}";
+
+        const urlDuvidas = "{% url 'duvidas' %}";
+
+        const urlEstatisticas = "{% url 'estatisticas' %}";
+
+        const urlManual = "{% url 'manual' %}";
+
+    </script>
+
+
+    <script src="{% static 'PaginaHome/menu.js' %}?v={% now 'U' %}"></script>
+
+    {{ dados|json_script:"dados-estatisticas" }}
+
+    <script src="{% static 'PaginaEstatistica/estatistica.js' %}?v={% now 'U' %}"></script>
+
+</body>
+
+</html>
