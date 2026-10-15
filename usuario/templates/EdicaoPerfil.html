@@ -1,0 +1,429 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyPlan | Perfil do Usuário</title>
+
+    <link rel="stylesheet" href="{% static 'EdicaoPerfil/EdicaoPerfil.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'PaginaHome/PaginaHome.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'EdicaoPerfil/EdicaoDisciplinas.css' %}?v={% now 'U' %}">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <div class="conteudo-da-pagina">
+
+        <div class="app-card">
+
+            <aside class="card-banner">
+                <div class="brand">
+
+                </div>
+
+                <div class="avatar-simple-container">
+                    <div class="avatar-circle">
+                        <i data-lucide="user" class="avatar-placeholder-icon"></i>
+                    </div>
+
+                    <h3 id="display-sidebar-nome">
+                        {{ user.username }}
+                    </h3>
+
+                    <p id="display-sidebar-curso">
+                        {% if user.curso %}
+                            {{ user.curso.nome }}
+                        {% else %}
+                            Não informado
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="banner-content">
+                    <p>
+                        Planeje seus estudos e acompanhe sua rotina acadêmica no CEFET-MG.
+                    </p>
+                </div>
+            </aside>
+
+            <main class="card-body">
+
+                <div class="aviso-sucesso" id="aviso-sucesso" role="status" hidden>
+                    <i data-lucide="circle-check"></i>
+                    Curso e disciplinas atualizados com sucesso.
+                </div>
+
+
+                <div class="section-header">
+                    <div>
+                        <h2>Perfil do Usuário</h2>
+                        <br>
+                        <p>Confira e atualize suas informações pessoais e acadêmicas</p>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn-edit"
+                        id="botao-editar"
+                        onclick="abrirModalEdicao()"
+                    >
+                        <i data-lucide="edit-3"></i>
+                        Editar Perfil
+                    </button>
+                </div>
+
+                <div class="info-group">
+                    <div class="group-title">
+                        <i data-lucide="user"></i>
+                        <h4>Informações Pessoais</h4>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-item">
+                            <label>Apelido</label>
+
+                            <div class="caixa-informacao">
+                                <span id="display-nome">
+                                    {{ user.username }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <label>Senha de Acesso</label>
+
+                            <div class="caixa-informacao">
+                                <span>••••••••</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <div class="group-title">
+                        <i data-lucide="graduation-cap"></i>
+                        <h4>Informações Acadêmicas</h4>
+                    </div>
+
+                    <div class="ed-curso-linha">
+                        <div class="info-item">
+                            <label>Curso</label>
+                            <div class="caixa-informacao">
+                                <span id="display-curso">
+                                    {% if user.curso %}
+                                        {{ user.curso.nome }}
+                                    {% else %}
+                                        Não informado
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-alterar" id="botao-alterar-curso">
+                            <i data-lucide="repeat"></i>
+                            Alterar curso e disciplinas
+                        </button>
+                    </div>
+
+                    <div class="info-item full-width ed-disciplinas-bloco">
+                        <label>Disciplinas Cadastradas (toque no botão para verificá-las e modificar)</label>
+                    </div>
+
+                </div>
+
+                <div class="info-group">
+                    <div class="group-title">
+                        <i data-lucide="mail"></i>
+                        <h4>Informações de Acesso</h4>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-item full-width">
+                            <label>E-mail cadastrado</label>
+
+                            <div class="caixa-informacao">
+                                <span id="display-email">
+                                    {{ user.email }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalEdicao">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3>Editar Perfil</h3>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    onclick="fecharModalEdicao()"
+                >
+                    &times;
+                </button>
+            </div>
+
+            <form id="formPerfil" onsubmit="salvarPerfil(event)">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="input-nome">Apelido</label>
+
+                    <input
+                        type="text"
+                        id="input-nome"
+                        name="nome"
+                        value="{{ user.username }}"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="input-email">E-mail</label>
+
+                    <input
+                        type="email"
+                        id="input-email"
+                        name="email"
+                        value="{{ user.email }}"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="input-senha">Nova Senha</label>
+
+                    <input
+                        type="password"
+                        id="input-senha"
+                        name="senha"
+                        placeholder="Deixe vazio para manter a senha atual"
+                    >
+                </div>
+
+                <div class="modal-actions">
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        onclick="fecharModalEdicao()"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn-save">
+                        Salvar Alterações
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- =========================
+         TROCAR CURSO E DISCIPLINAS (passo a passo)
+    ========================= -->
+
+    <div class="modal-overlay" id="modalDisciplinas">
+        <div class="modal-content modal-largo" role="dialog" aria-modal="true" aria-labelledby="ed-titulo-etapa">
+
+            <div class="modal-header">
+                <h3 id="ed-titulo-etapa">Escolha seu curso</h3>
+                <button type="button" class="btn-close" id="ed-fechar" aria-label="Fechar">&times;</button>
+            </div>
+
+            <ol class="ed-passos" id="ed-passos">
+                <li class="ativo">1. Curso</li>
+                <li>2. Disciplinas</li>
+                <li>3. Formação geral</li>
+            </ol>
+
+            <section class="ed-etapa" id="ed-etapa-1">
+                <p class="ed-subtitulo">
+                    Escolha o curso em que você está matriculado. Para continuar no mesmo curso, basta avançar.
+                </p>
+                <div class="ed-cursos" id="ed-cursos"></div>
+                <p class="ed-nota" id="ed-nota-troca" hidden>
+                    Ao trocar de curso, as disciplinas técnicas do curso atual saem da sua lista.
+                    Suas notas ficam guardadas e voltam se você escolher a disciplina de novo.
+                </p>
+            </section>
+
+            <section class="ed-etapa" id="ed-etapa-2" hidden>
+                <p class="ed-subtitulo">
+                    Escolha a série e marque as disciplinas do seu curso. Você pode trocar de série
+                    e marcar disciplinas de mais de uma.
+                </p>
+                <div class="ed-series" id="ed-series" role="tablist" aria-label="Série">
+                    <button type="button" data-serie="1" role="tab" aria-selected="true">1º ano</button>
+                    <button type="button" data-serie="2" role="tab" aria-selected="false">2º ano</button>
+                    <button type="button" data-serie="3" role="tab" aria-selected="false">3º ano</button>
+                </div>
+                <button type="button" class="ed-marcar-todas" id="ed-todas-tecnicas" hidden>Marcar todas</button>
+                <div class="ed-lista" id="ed-lista-tecnicas"></div>
+            </section>
+
+            <section class="ed-etapa" id="ed-etapa-3" hidden>
+                <p class="ed-subtitulo">
+                    Marque as disciplinas de Formação Geral que você quer acompanhar.
+                </p>
+                <button type="button" class="ed-marcar-todas" id="ed-todas-fg" hidden>Marcar todas</button>
+                <div class="ed-lista" id="ed-lista-fg"></div>
+            </section>
+
+            <p class="ed-contador" id="ed-contador" hidden></p>
+            <p class="ed-aviso" id="ed-aviso" role="alert"></p>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" id="ed-voltar">Cancelar</button>
+                <button type="button" class="btn-save" id="ed-proximo">Próximo</button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        const nomeUsuario = "{{ user.username }}";
+        const cursoUsuario = "{% if user.curso %}{{ user.curso.nome }}{% else %}Não informado{% endif %}";
+        const urlHome = "{% url 'home' %}";
+        const urlPerfil = "{% url 'perfil' %}";
+        const urlTarefas = "{% url 'tarefas' %}";
+        const urlDuvidas = "{% url 'duvidas' %}";
+        const urlEstatisticas = "{% url 'estatisticas' %}";
+        const urlManual = "{% url 'manual' %}";
+        const urlAtualizarDisciplinas = "{% url 'atualizar_disciplinas' %}";
+    </script>
+
+    <script>
+        function abrirModalEdicao() {
+            document.getElementById("modalEdicao").classList.add("ativo");
+        }
+
+        function fecharModalEdicao() {
+            document.getElementById("modalEdicao").classList.remove("ativo");
+        }
+
+        async function salvarPerfil(evento) {
+            evento.preventDefault();
+
+            const dados = new FormData();
+
+            dados.append(
+                "nome",
+                document.getElementById("input-nome").value
+            );
+
+            dados.append(
+                "email",
+                document.getElementById("input-email").value
+            );
+
+            dados.append(
+                "senha",
+                document.getElementById("input-senha").value
+            );
+
+            try {
+                const resposta = await fetch(
+                    "{% url 'atualizar_perfil' %}",
+                    {
+                        method: "POST",
+                        body: dados,
+                        headers: {
+                            "X-CSRFToken": obterCsrfToken()
+                        }
+                    }
+                );
+
+                const resultado = await resposta.json();
+
+                if (!resposta.ok) {
+                    throw new Error(
+                        resultado.erro || "Não foi possível salvar."
+                    );
+                }
+
+                document.getElementById("display-nome").textContent =
+                    resultado.nome;
+
+                document.getElementById("display-sidebar-nome").textContent =
+                    resultado.nome;
+
+                document.getElementById("display-email").textContent =
+                    resultado.email;
+
+                document.getElementById("display-curso").textContent =
+                    resultado.curso || "Não informado";
+
+                document.getElementById("display-sidebar-curso").textContent =
+                    resultado.curso || "Não informado";
+
+                if (resultado.disciplinas) {
+                    document.getElementById("display-disciplinas").textContent =
+                        resultado.disciplinas;
+                }
+
+                document.getElementById("input-senha").value = "";
+
+                fecharModalEdicao();
+
+            } catch (erro) {
+                console.error(erro);
+
+                alert(
+                    erro.message ||
+                    "Não foi possível salvar as alterações."
+                );
+            }
+        }
+
+        function obterCsrfToken() {
+            const nome = "csrftoken=";
+            const partes = document.cookie.split(";");
+
+            for (let parte of partes) {
+                parte = parte.trim();
+
+                if (parte.startsWith(nome)) {
+                    return parte.substring(nome.length);
+                }
+            }
+
+            return "";
+        }
+
+        document.getElementById("modalEdicao").addEventListener(
+            "click",
+            function(evento) {
+                if (evento.target === this) {
+                    fecharModalEdicao();
+                }
+            }
+        );
+
+        lucide.createIcons();
+    </script>
+
+{{ dados_academicos|json_script:"dados-academicos" }}
+
+    <script src="{% static 'EdicaoPerfil/EdicaoDisciplinas.js' %}?v={% now 'U' %}"></script>
+
+    <script src="{% static 'PaginaHome/menu.js' %}?v={% now 'U' %}"></script>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body>
+</html>
